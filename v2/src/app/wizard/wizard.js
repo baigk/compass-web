@@ -125,7 +125,7 @@ define(['uiRouter', 'angularTable', 'angularDragDrop', 'angularTouch', 'ngSpinne
                         break;
                     case "openstack_juno":
                         preConfigData = data["openstack"];
-                        $scope.steps = wizardStepsData["os_and_ts_no_network"];
+                        $scope.steps = wizardStepsData["os_and_ts"];
                         wizardFactory.setSteps($scope.steps);
                         break;
                     default:
@@ -565,7 +565,7 @@ define(['uiRouter', 'angularTable', 'angularDragDrop', 'angularTouch', 'ngSpinne
 
         $scope.general = wizardFactory.getGeneralConfig();
         $scope.server_credentials = wizardFactory.getServerCredentials();
-
+        $scope.confirmPassword="root";
 
         if (!$scope.general["dns_servers"]) {
             $scope.general["dns_servers"] = [""];
@@ -638,6 +638,8 @@ define(['uiRouter', 'angularTable', 'angularDragDrop', 'angularTouch', 'ngSpinne
             };
 
             if ($scope.generalForm.$valid) {
+                osGlobalConfig.os_config.general.repo_name="Installer MON OSD openstack";
+                osGlobalConfig.os_config.general.deploy_type="baremetal";
                 dataService.updateClusterConfig(cluster.id, osGlobalConfig).success(function(configData) {
                     wizardFactory.setGeneralConfig($scope.general);
                     var commitState = {
@@ -1736,9 +1738,6 @@ define(['uiRouter', 'angularTable', 'angularDragDrop', 'angularTouch', 'ngSpinne
                     $scope.interfaces[key].dropChannel = "external";
                 }
                 // The interface marked as management is required to be set as Management Network
-                if (value.is_mgmt) {
-                    $scope.networking["management"].mapping_interface = key;
-                }
             });
         }
 
@@ -1765,9 +1764,10 @@ define(['uiRouter', 'angularTable', 'angularDragDrop', 'angularTouch', 'ngSpinne
 
             $scope.$emit("loading", true);
             var networks = {};
-            angular.forEach($scope.networking, function(value, key) {
-                networks[key] = value.mapping_interface;
-            });
+            //angular.forEach($scope.networking, function(value, key) {
+            //    networks[key] = value.mapping_interface;
+            //});
+            networks['install']='eth0';
             var network_mapping = {
                 "package_config": {
                     "network_mapping": networks
@@ -2107,7 +2107,7 @@ define(['uiRouter', 'angularTable', 'angularDragDrop', 'angularTouch', 'ngSpinne
 
         $scope.$watch('subnetworks', function() {
             if ($scope.subnetworks.length == 0) {
-                $scope.subnetworks.push({});
+                $scope.subnetworks.push({'subnet':'10.1.0.0/24',valid:true});
             }
         }, true);
 

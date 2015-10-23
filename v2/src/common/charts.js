@@ -87,13 +87,46 @@ define(['angular', 'ganttChart'], function(angular, ganttChart) {
                 var progress = 0;
                 var progressTimer;
                 var fireTimer = true;
+                var phase1Time = 15*60;
+                var phase2Time = 15*60+phase1Time;
                 scope.progressdata = 0;
                 scope.progressSeverity = "INFO";
+                scope.elapseTime = 0;
+                scope.phase = 1;
                 var getProgress = function(num) {
                     dataService.getClusterHostProgress(clusterId, hostId).then(function(progressData) {
                         //success
+  			if(scope.progressdata == "") {
+			    scope.progressdata=0;
+			}
                         progress = parseInt(eval(progressData.data.percentage * 100));
-                        scope.progressdata = progress;
+                        if(scope.phase==1) {
+			    if(scope.elapseTime < phase1Time ) {
+                                if(scope.progressdata < 50) {
+				    scope.progressdata = parseInt(scope.progressdata);
+ 				    var randomNum = (Math.floor(Math.random()*50))%47?0:1;
+				    console.log('random:%d',randomNum);
+                                    scope.progressdata+=randomNum;
+				}
+			        scope.elapseTime+=5;
+			    }
+		 	    else {
+                                scope.phase=2;
+				scope.progressdata=50;
+			    }
+			}
+			if(scope.phase==2) {
+                            if(progress != 100) {
+                                if(scope.progressdata < 99) {
+				    scope.progressdata = parseInt(scope.progressdata);
+			            scope.progressdata +=(Math.floor(Math.random()*50))%47?0:1;
+				}
+                            }
+			}
+ 			
+			if(progress == 100) {
+			    scope.progressdata=100;
+			}
                         if (fireTimer && progress < 100 && num != 1) {
                             progressTimer = $timeout(getProgress, 5000);
                         }

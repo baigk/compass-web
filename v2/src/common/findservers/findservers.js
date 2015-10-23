@@ -160,7 +160,10 @@ define(['angular'], function() {
 
 
                 scope.newswitch = {}
+                scope.newswitch.ip="172.29.24.252";
                 scope.newswitch.credentials = {};
+                scope.newswitch.credentials.version="2c";
+                scope.newswitch.credentials.community="public";
                 scope.alerts = [];
 
                 scope.addSwitch = function() {

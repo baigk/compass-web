@@ -128,7 +128,7 @@
                         </td>
                         <td>
                             <div class="role-assign-drop" ui-on-Drop="onDrop($event, server)" drag-hover-class="drag-enter-role" drop-channel="{{server.dropChannel}}">
-                                <span ng-repeat="role in server['roles']" class="role-tag border-radius-4" ng-style="{'background-color': role.color}"   tooltip="{{role.display_name}}">
+                                <span ng-repeat="role in server['roles']" class="role-tag border-radius-4" tooltip="{{role.display_name}}" ng-style="{'background-color': role.color, color:'#346D98'}">
                                     <span class="pull-left">{{role.display_name | limitTo : 15}}</span>
                                     <span class="pull-right close" ng-click="removeRole(server, role)">
                                         <i class="ace-icon fa fa-times white"></i>
@@ -147,7 +147,7 @@
                     <h4>Drag to Assign</h4>
                 </div>
                 <div class="role-assign-drag">
-                    <div tooltip-placement="left" tooltip="{{role_value.display_name}}" tooltip-popup-delay='100' ui-draggable="true" on-drop-success="dropSuccessHandler($event,role_value,role_key)" class="role-tag drag-roles ui-draggable" ng-repeat="(role_key, role_value) in roles" ng-style="{'background-color': role_value.color}" drag-channel="{{role_value.dragChannel}}">
+                    <div tooltip-placement="left" tooltip="{{role_value.display_name}}" tooltip-popup-delay='100' ui-draggable="true" on-drop-success="dropSuccessHandler($event,role_value,role_key)" class="role-tag drag-roles ui-draggable" ng-repeat="(role_key, role_value) in roles" drag-channel="{{role_value.dragChannel}}" ng-style="{'background-color': role_value.color,color:'#346D97'}">
                         <i class="ace-icon fa fa-arrows margin-left-neg4"></i>
                         <span >{{role_value.display_name}}</span>
                     </div>
